@@ -2,6 +2,7 @@ package com.aroman.kotlinproject1.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.aroman.kotlinproject1.R
 import com.aroman.kotlinproject1.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -11,5 +12,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportFragmentManager.beginTransaction()
+            .add(R.id.main_fragment, MainFragment.newInstance())
+            .commit()
     }
 }

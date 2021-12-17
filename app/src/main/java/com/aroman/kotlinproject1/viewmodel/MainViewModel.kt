@@ -5,9 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.aroman.kotlinproject1.model.Repository
 import com.aroman.kotlinproject1.model.RepositoryImpl
-import java.lang.Exception
-import java.lang.Thread.sleep
-import kotlin.random.Random
 
 class MainViewModel : ViewModel() {
 
@@ -16,19 +13,20 @@ class MainViewModel : ViewModel() {
 
     fun getData(): LiveData<AppState> = liveDataToObserve
 
-    fun getWeather() {
+    fun getWeatherLocalRus() = getWeatherLocal(true)
+
+    fun getWeatherLocalWorld() = getWeatherLocal(false)
+
+    //fun getWeatherYaApi() = TODO
+
+    private fun getWeatherLocal(isRussian: Boolean = true) {
         liveDataToObserve.value = AppState.Loading
 
         Thread {
-            sleep(2000)
-
-            if (Random.nextBoolean()) {
-                liveDataToObserve.postValue(AppState.Success(repository.getWeatherFromServer()))
-            } else {
-                liveDataToObserve.postValue(AppState.Error(Exception("No Internet")))
-            }
+            val weather =
+                if (isRussian) repository.getWeatherFromLocalStorageRus()
+                else repository.getWeatherFromLocalStorageWorld()
+            liveDataToObserve.postValue(AppState.Success(weather))
         }.start()
     }
-
-
 }

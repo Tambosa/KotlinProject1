@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.MainFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cityName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:textSize="@dimen/text_medium"
+            android:textStyle="bold"
+            tools:text="Moscow" />
+
+        <TextView
+            android:id="@+id/temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:textSize="@dimen/text_medium"
+            android:textStyle="bold"
+            tools:text="10" />
+
+        <TextView
+            android:id="@+id/latitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:textSize="@dimen/text_small"
+            android:textStyle="italic"
+            tools:text="55" />
+
+        <TextView
+            android:id="@+id/longitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:textSize="@dimen/text_small"
+            android:textStyle="italic"
+            tools:text="55" />
+
+    </LinearLayout>
+</FrameLayout>
