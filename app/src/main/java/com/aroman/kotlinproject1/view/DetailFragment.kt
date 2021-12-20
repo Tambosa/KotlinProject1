@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.aroman.kotlinproject1.databinding.DetailFragmentBinding
 import com.aroman.kotlinproject1.model.Weather
+import kotlinx.android.synthetic.main.detail_fragment.*
 
 class DetailFragment : Fragment() {
 
@@ -32,12 +33,13 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val weather = arguments?.getParcelable<Weather>("WEATHER_EXTRA")
-
-        binding.cityName.text = weather?.city?.name
-        binding.temperature.text = weather?.temperature.toString()
-        binding.latitude.text = weather?.city?.lat.toString()
-        binding.longitude.text = weather?.city?.lon.toString()
+        arguments?.getParcelable<Weather>("WEATHER_EXTRA")?.let {
+            binding.cityName.text = it.city.name
+            binding.temperature.text = it.temperature.toString()
+            binding.latitude.text = it.city.lat.toString()
+            binding.longitude.text = it.city.lon.toString()
+        }
+        view.simpleSnack("Showing ${cityName.text}")
     }
 
     override fun onDestroy() {
