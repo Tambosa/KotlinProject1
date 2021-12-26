@@ -5,7 +5,6 @@ import android.os.Looper
 import com.aroman.kotlinproject1.BuildConfig
 import com.google.gson.Gson
 import java.io.BufferedReader
-import java.io.InputStream
 import java.io.InputStreamReader
 import java.lang.Exception
 import java.net.URL
@@ -22,18 +21,20 @@ object WeatherLoader {
         Executors.newSingleThreadExecutor().submit {
             var urlConnections: HttpsURLConnection? = null
             try {
-                val uri = URL("https://api.weather.yandex.ru/v2/forecast/?lat=${city.lat}&lon=${city.lon}")
+                val uri =
+                    URL("https://api.weather.yandex.ru/v2/forecast/?lat=${city.lat}&lon=${city.lon}")
 
-                urlConnections = uri.openConnection() as HttpsURLConnection
-                urlConnections.addRequestProperty("X-Yandex-API-Key", BuildConfig.WEATHER_API_KEY)
-                urlConnections.requestMethod = "GET"
-                urlConnections.readTimeout = 1000
-                urlConnections.connectTimeout = 1000
+                urlConnections = (uri.openConnection() as HttpsURLConnection).apply {
+                    addRequestProperty("X-Yandex-API-Key", BuildConfig.WEATHER_API_KEY)
+                    requestMethod = "GET"
+                    readTimeout = 1000
+                    connectTimeout = 1000
+                }
 
                 val reader = BufferedReader(InputStreamReader(urlConnections.inputStream))
                 val result = reader.lines().collect(Collectors.joining("\n"))
 
-                val weatherDTO = Gson().fromJson<WeatherDTO>(result, WeatherDTO::class.java)
+                val weatherDTO = Gson().fromJson(result, WeatherDTO::class.java)
 
                 handler.post {
                     listener.onLoaded(weatherDTO)
