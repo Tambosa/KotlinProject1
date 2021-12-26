@@ -2,4 +2,6 @@
     <string name="app_name">KotlinProject1</string>
     <string name="russia"><![CDATA[-> Russia]]></string>
     <string name="world"><![CDATA[-> World]]></string>
+    <string name="temperature_text">Температура</string>
+    <string name="feels_like">Ощущается</string>
 </resources>
