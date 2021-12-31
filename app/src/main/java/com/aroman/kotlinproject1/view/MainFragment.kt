@@ -14,7 +14,6 @@ import com.aroman.kotlinproject1.model.Weather
 import com.aroman.kotlinproject1.databinding.MainFragmentBinding
 import com.aroman.kotlinproject1.viewmodel.AppState
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.detail_fragment.*
 
 class MainFragment : Fragment() {
 

@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import coil.ImageLoader
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.aroman.kotlinproject1.databinding.DetailFragmentBinding
 import com.aroman.kotlinproject1.model.*
 
@@ -30,6 +33,17 @@ class DetailFragment : Fragment() {
                 weatherCondition.text = weather.condition
                 temperature.text = weather.temperature.toString()
                 feelsLike.text = weather.feelsLike.toString()
+
+
+                val request = ImageRequest.Builder(requireContext())
+                    .data("https://yastatic.net/weather/i/icons/funky/dark/${weather.icon}.svg")
+                    .target(weatherImage)
+                    .build()
+
+                ImageLoader.Builder(requireContext())
+                    .componentRegistry { add(SvgDecoder(requireContext())) }
+                    .build()
+                    .enqueue(request)
             }
         }
     }
