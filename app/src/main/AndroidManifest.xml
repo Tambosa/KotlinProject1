@@ -11,6 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KotlinProject1">
+        <receiver
+            android:name=".model.WeatherReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service
+            android:name=".model.WeatherIntentService"
+            android:exported="false" />
+
         <activity
             android:name=".view.MainActivity"
             android:exported="true">

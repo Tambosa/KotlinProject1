@@ -1,16 +1,17 @@
 package com.aroman.kotlinproject1.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import coil.ImageLoader
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.aroman.kotlinproject1.databinding.DetailFragmentBinding
-import com.aroman.kotlinproject1.model.Weather
-import com.aroman.kotlinproject1.model.WeatherDTO
-import com.aroman.kotlinproject1.model.WeatherLoader
-import kotlinx.android.synthetic.main.detail_fragment.*
+import com.aroman.kotlinproject1.model.*
 
 class DetailFragment : Fragment() {
 
@@ -24,6 +25,28 @@ class DetailFragment : Fragment() {
 
     private var _binding: DetailFragmentBinding? = null
     private val binding get() = _binding!!
+    private val listener = Repository.OnLoadListener {
+        RepositoryImpl.getWeatherFromServer()?.let { weather ->
+            Log.d("WEATHERLOADED", "onLoaded: $weather")
+
+            with(binding) {
+                weatherCondition.text = weather.condition
+                temperature.text = weather.temperature.toString()
+                feelsLike.text = weather.feelsLike.toString()
+
+
+                val request = ImageRequest.Builder(requireContext())
+                    .data("https://yastatic.net/weather/i/icons/funky/dark/${weather.icon}.svg")
+                    .target(weatherImage)
+                    .build()
+
+                ImageLoader.Builder(requireContext())
+                    .componentRegistry { add(SvgDecoder(requireContext())) }
+                    .build()
+                    .enqueue(request)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,35 +58,28 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadingContainer.show()
-        arguments?.getParcelable<Weather>("WEATHER_EXTRA")?.let {
+
+        RepositoryImpl.addLoadListener(listener)
+
+        arguments?.getParcelable<Weather>("WEATHER_EXTRA")?.let { weather ->
             with(binding) {
-                cityName.text = it.city.name
-                cityCoordinates.text = "lat: ${it.city.lat} lon: ${it.city.lon}"
+                cityName.text = weather.city.name
+                cityCoordinates.text = "lat: ${weather.city.lat} lon: ${weather.city.lon}"
             }
 
-            WeatherLoader.load(it.city, object : WeatherLoader.OnWeatherLoadListener {
-
-                override fun onLoaded(weatherDTO: WeatherDTO) {
-                    view.simpleSnack("Showing ${cityName.text}")
-                    with(binding) {
-                        weatherCondition.text = weatherDTO.fact?.condition.toString()
-                        temperature.text = weatherDTO.fact?.temp.toString()
-                        feelsLike.text = weatherDTO.fact?.feels_like.toString()
-                    }
-                    loadingContainer.hide()
-                }
-
-                override fun onFailed(throwable: Throwable) {
-                    view.simpleSnack("Failed: ${throwable.message}")
-                    Log.d("WeatherLoader", throwable.message.toString())
-                }
-            })
+            requireActivity().startService(
+                Intent(
+                    requireContext(),
+                    WeatherIntentService::class.java
+                ).apply {
+                    putExtra("WEATHER_EXTRA", weather)
+                })
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        RepositoryImpl.removeLoadListener(listener)
         _binding = null
     }
 }
