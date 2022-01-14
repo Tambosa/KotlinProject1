@@ -1,6 +1,7 @@
 package com.aroman.kotlinproject1.view
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -79,6 +80,10 @@ class MainFragment : Fragment() {
                     binding.mainFab.text = resources.getText(R.string.russia)
                 }
             }
+        }
+
+        binding.historyFab.setOnClickListener{
+            requireContext().startActivity(Intent(requireContext(), HistoryActivity::class.java))
         }
     }
 

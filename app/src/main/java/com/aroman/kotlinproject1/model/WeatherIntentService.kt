@@ -21,7 +21,8 @@ class WeatherIntentService : IntentService("WeatherIntentService") {
                                     temperature = weatherDTO.fact?.temp ?: 0,
                                     feelsLike = weatherDTO.fact?.feels_like ?: 0,
                                     condition = weatherDTO.fact?.condition ?: "",
-                                    icon = weatherDTO.fact?.icon ?: ""
+                                    icon = weatherDTO.fact?.icon ?: "",
+                                    city = weather.city
                                 )
                             )
                             action = WeatherReceiver.WEATHER_LOADED
