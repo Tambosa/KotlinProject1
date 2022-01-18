@@ -11,7 +11,16 @@ class LocalRepositoryImpl(private val dao: HistoryDAO) : LocalRepository {
                 temperature = historyEntity.temperature,
                 condition = historyEntity.condition
             )
+        }
+    }
 
+    override fun getHistoryByCity(word: String): List<Weather> {
+        return dao.getHistoryByCity(word).map { historyEntity ->
+            Weather(
+                city = City(historyEntity.city),
+                temperature = historyEntity.temperature,
+                condition = historyEntity.condition
+            )
         }
     }
 

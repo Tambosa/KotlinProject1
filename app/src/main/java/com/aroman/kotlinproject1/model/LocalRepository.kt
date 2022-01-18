@@ -4,5 +4,7 @@ interface LocalRepository {
 
     fun getAllHistory(): List<Weather>
 
+    fun getHistoryByCity(word: String): List<Weather>
+
     fun saveEntity(weather: Weather)
 }
