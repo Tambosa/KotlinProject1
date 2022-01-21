@@ -4,4 +4,6 @@
     <string name="world"><![CDATA[-> World]]></string>
     <string name="temperature_text">Температура</string>
     <string name="feels_like">Ощущается</string>
+    <string name="history">History</string>
+    <string name="contacts">Contacts</string>
 </resources>

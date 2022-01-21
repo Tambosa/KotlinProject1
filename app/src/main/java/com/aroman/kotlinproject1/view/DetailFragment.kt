@@ -7,11 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.aroman.kotlinproject1.databinding.DetailFragmentBinding
 import com.aroman.kotlinproject1.model.*
+import com.aroman.kotlinproject1.viewmodel.DetailViewModel
 
 class DetailFragment : Fragment() {
 
@@ -25,7 +27,13 @@ class DetailFragment : Fragment() {
 
     private var _binding: DetailFragmentBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: DetailViewModel by lazy {
+        ViewModelProvider(this).get(DetailViewModel::class.java)
+    }
+
     private val listener = Repository.OnLoadListener {
+
         RepositoryImpl.getWeatherFromServer()?.let { weather ->
             Log.d("WEATHERLOADED", "onLoaded: $weather")
 
@@ -45,6 +53,8 @@ class DetailFragment : Fragment() {
                     .build()
                     .enqueue(request)
             }
+
+            viewModel.saveHistory(weather)
         }
     }
 
@@ -74,6 +84,10 @@ class DetailFragment : Fragment() {
                 ).apply {
                     putExtra("WEATHER_EXTRA", weather)
                 })
+        }
+
+        viewModel.getData().observe(viewLifecycleOwner){
+
         }
     }
 

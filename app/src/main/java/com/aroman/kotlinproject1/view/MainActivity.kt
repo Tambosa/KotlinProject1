@@ -1,9 +1,12 @@
 package com.aroman.kotlinproject1.view
 
+import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import com.aroman.kotlinproject1.R
 import com.aroman.kotlinproject1.databinding.ActivityMainBinding
 
@@ -26,5 +29,19 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         unregisterReceiver(receiver)
         super.onDestroy()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if (item.itemId == R.id.contacts) {
+            startActivity(Intent(this, ContactsActivity::class.java))
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 }
