@@ -43,7 +43,7 @@ object WeatherLoader {
 
         try {
             val uri =
-                URL("https://api.weather.yandex.ru/v2/forecast/?lat=${city.lat}&lon=${city.lon}")
+                URL("https://api.weather.yandex.ru/v2/informers?lat=${city.lat}&lon=${city.lon}")
 
             urlConnections = (uri.openConnection() as HttpsURLConnection).apply {
                 addRequestProperty("X-Yandex-API-Key", BuildConfig.WEATHER_API_KEY)
@@ -73,7 +73,7 @@ object WeatherLoader {
         val request: Request = Request.Builder()
             .get()
             .addHeader("X-Yandex-API-Key", BuildConfig.WEATHER_API_KEY)
-            .url("https://api.weather.yandex.ru/v2/forecast/?lat=${city.lat}&lon=${city.lon}")
+            .url("https://api.weather.yandex.ru/v2/informers?lat=${city.lat}&lon=${city.lon}")
             .build()
 
         client.newCall(request).enqueue(object : Callback {
