@@ -25,13 +25,35 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "TYPE", '"RELEASE"'
+        }
+        staging {
+            initWith debug
+            versionNameSuffix "-staging"
+            buildConfigField "String", "TYPE", '"STAGING"'
         }
     }
+
+    signingConfigs {
+        release {
+            storeFile file("keystore.jks")
+            storePassword "BuildConfig.AndreiRomanKey"
+            keyAlias 'AndreiRomanKey'
+            keyPassword "BuildConfig.AndreiRomanKey"
+        }
+    }
+
     buildTypes.each {
         Properties properties = new Properties()
         properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
         def apiKey = properties.getProperty("yandex_weather_api_key", "")
         it.buildConfigField "String", "WEATHER_API_KEY", apiKey
+    }
+    buildTypes.each {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
+        def signedKey = properties.getProperty("signed_key_password", "")
+        it.buildConfigField "String", "AndreiRomanKey", signedKey
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
