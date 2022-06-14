@@ -33,9 +33,20 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        if (item.itemId == R.id.contacts) {
-            startActivity(Intent(this, ContactsActivity::class.java))
-            return true
+        when (item.itemId) {
+            R.id.menu_contacts -> {
+                startActivity(Intent(this, ContactsActivity::class.java))
+                return true
+            }
+            R.id.menu_google_maps -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .add(R.id.main_fragment, MapsFragment())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
